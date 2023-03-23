@@ -1,0 +1,12 @@
+.cards__image {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  position: relative;
+  aspect-ratio: 1/1;
+  box-sizing: border-box;
+}
+
+.cards__image:hover {
+  cursor: pointer;
+}

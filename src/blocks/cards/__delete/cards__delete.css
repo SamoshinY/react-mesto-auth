@@ -1,0 +1,19 @@
+.cards__delete {
+  align-self: flex-start;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 18px;
+  height: 19px;
+  background: url(../../../images/Trash.svg) transparent;
+  transition: 0.3s opacity;
+  cursor: pointer;
+}
+
+.cards__delete:hover {
+    opacity: 0.5;
+    color: #fff;
+}

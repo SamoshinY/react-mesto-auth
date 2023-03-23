@@ -1,0 +1,44 @@
+.page {
+  box-sizing: border-box;
+  background-color: #000;
+  font-family: 'Inter', Arial, sans-serif;
+  color: #fff;
+  min-width: 300px;
+  max-width: 1280px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 45px 200px 60px;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+@media screen and (max-width: 1080px) {
+  .page {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .page {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .page {
+    padding-left: 75px;
+    padding-right: 75px;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .page {
+    padding: 28px 0 36px;
+  }
+}

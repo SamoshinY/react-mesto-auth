@@ -1,0 +1,10 @@
+.profile__image-wrapper {
+  display: flex;
+  width: 120px;
+  height: 120px;
+  margin-right: 30px;
+  background-image: url(../../../images/change-avatar.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 26px;
+}

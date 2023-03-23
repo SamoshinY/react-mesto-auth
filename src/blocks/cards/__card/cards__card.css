@@ -1,0 +1,7 @@
+.cards__card {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+  position: relative;
+}
