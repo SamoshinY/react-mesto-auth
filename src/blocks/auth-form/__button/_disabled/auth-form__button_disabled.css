@@ -1,0 +1,6 @@
+.form__save_disabled {
+    background-color: #E5E5E5;
+    cursor: default;
+    pointer-events: none;
+    color: #000;
+}

@@ -4,15 +4,23 @@ import PopupWithForm from "./PopupWithForm";
 import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 function EditProfilePopup(props) {
-  const currentUser = useContext(CurrentUserContext);  
-  const { values, handleChange, errors, isValid, resetForm, setValues, setIsValid } = useFormAndValidation()
+  const currentUser = useContext(CurrentUserContext);
+  const {
+    values,
+    handleChange,
+    errors,
+    isValid,
+    resetForm,
+    setValues,
+    setIsValid,
+  } = useFormAndValidation();
 
   useEffect(() => {
     resetForm();
     setValues({
-    name: currentUser.name,
-    job: currentUser.about
-    })    
+      name: currentUser.name,
+      job: currentUser.about,
+    });
   }, [resetForm, currentUser, props.isOpen, setValues]);
 
   function handleSubmit(evt) {
@@ -22,7 +30,7 @@ function EditProfilePopup(props) {
       about: values.job,
     });
     resetForm();
-    setIsValid(false)
+    setIsValid(false);
   }
 
   return (
@@ -41,27 +49,35 @@ function EditProfilePopup(props) {
           type="text"
           name="name"
           placeholder="Введите имя"
-          className={`form__item form__item_text_name" ${errors.name && "form__item_type_error"}`}
+          className={`form__item form__item_text_name" ${
+            errors.name && "form__item_type_error"
+          }`}
           required
           minLength="2"
           maxLength="40"
           onChange={handleChange}
-          value={values.name || ''}
+          value={values.name || ""}
         />
-        <span className="name-item-error form__item-error">{errors.name || ''}</span>
+        <span className="name-item-error form__item-error">
+          {errors.name || ""}
+        </span>
         <input
           id="job-item"
           type="text"
           name="job"
           placeholder="Введите информацию о себе"
-          className={`form__item form__item_text_job" ${errors.job && "form__item_type_error"}`}
+          className={`form__item form__item_text_job" ${
+            errors.job && "form__item_type_error"
+          }`}
           required
           minLength="2"
           maxLength="200"
           onChange={handleChange}
-          value={values.job || ''}
+          value={values.job || ""}
         />
-        <span className="job-item-error form__item-error">{errors.job || ''}</span>
+        <span className="job-item-error form__item-error">
+          {errors.job || ""}
+        </span>
       </fieldset>
     </PopupWithForm>
   );

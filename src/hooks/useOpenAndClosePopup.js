@@ -5,6 +5,7 @@ export function useOpenAndClosePopup() {
   const [isEditProfilePopupOpen, setisEditProfilePopupOpen] = useState("");
   const [isAddPlacePopupOpen, setisAddPlacePopupOpen] = useState("");
   const [isConfirmPopupOpen, setisConfirmPopupOpen] = useState("");
+  const [isInfoTooltipPopupOpen, setisInfoTooltipPopupOpen] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [buttonText, setButtonText] = useState("");
   const [deletedCard, setDeletedCard] = useState({});
@@ -34,11 +35,16 @@ export function useOpenAndClosePopup() {
     setSelectedCard(card);
   }
 
+  function handleInfoTooltip() {
+    setisInfoTooltipPopupOpen("popup_opened");
+  }
+
   function closeAllPopups() {
     setisEditAvatarPopupOpen("");
     setisEditProfilePopupOpen("");
     setisAddPlacePopupOpen("");
     setisConfirmPopupOpen("");
+    setisInfoTooltipPopupOpen("");
     setSelectedCard({});
   }
 
@@ -47,6 +53,7 @@ export function useOpenAndClosePopup() {
     isEditProfilePopupOpen,
     isAddPlacePopupOpen,
     isConfirmPopupOpen,
+    isInfoTooltipPopupOpen,
     buttonText,
     selectedCard,
     deletedCard,
@@ -55,6 +62,7 @@ export function useOpenAndClosePopup() {
     handleAddPlaceClick,
     handleCardDeleteClick,
     handleCardClick,
+    handleInfoTooltip,
     closeAllPopups,
     setButtonText,
   };

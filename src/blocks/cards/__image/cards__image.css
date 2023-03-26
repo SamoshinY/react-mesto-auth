@@ -5,8 +5,10 @@
   position: relative;
   aspect-ratio: 1/1;
   box-sizing: border-box;
+  transition: .3s opacity;
 }
 
 .cards__image:hover {
+  opacity: .5;
   cursor: pointer;
 }
