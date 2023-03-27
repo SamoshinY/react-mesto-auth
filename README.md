@@ -25,4 +25,4 @@
 * Рефакторинг на React
 * Регистрация и авторизация на React
 
-[Ссылка на проект](https://samoshiny.github.io/mesto/)
+[Ссылка на проект](https://samoshiny.github.io/react-mesto-auth)
