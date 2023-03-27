@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import successfulImg from "../images/successfulImg.svg";
 import failedImg from "../images/failedImg.svg";
 
-function InfoTooltip({ isOpen, onClose, authResult, errorText }) {
+function InfoTooltip({ isOpen, onClose, authResult }) {
   useEffect(() => {
     const handleEscDown = (evt) => {
       if (evt.key === "Escape") {
@@ -26,19 +26,18 @@ function InfoTooltip({ isOpen, onClose, authResult, errorText }) {
         <img
           className="popup__infoTooltip-img"
           src={successfulImg}
-          alt="Результат"
+          alt="Вы успешно зарегистрировались!"
         />
         : <img
         className="popup__infoTooltip-img"
         src={failedImg}
-        alt="Результат"
+        alt="Что-то пошло не так!"
       />}
         <p className="popup__infoTooltip-text">
           {authResult
             ? "Вы успешно зарегистрировались!"
             : "Что-то пошло не так! Попробуйте еще раз."}
-        </p>
-        <span className="popup__infoTooltip-error-text">{errorText}</span>
+        </p>        
         <button
           onClick={onClose}
           type="button"

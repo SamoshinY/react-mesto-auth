@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
-export function useOpenAndClosePopup() {
+export const useOpenAndClosePopup = () => {
   const [isEditAvatarPopupOpen, setisEditAvatarPopupOpen] = useState("");
   const [isEditProfilePopupOpen, setisEditProfilePopupOpen] = useState("");
   const [isAddPlacePopupOpen, setisAddPlacePopupOpen] = useState("");
@@ -10,36 +10,36 @@ export function useOpenAndClosePopup() {
   const [buttonText, setButtonText] = useState("");
   const [deletedCard, setDeletedCard] = useState({});
 
-  function handleEditAvatarClick() {
+  const handleEditAvatarClick = () => {
     setButtonText("Сохранить");
     setisEditAvatarPopupOpen("popup_opened");
   }
 
-  function handleEditProfileClick() {
+  const handleEditProfileClick = () =>  {
     setButtonText("Сохранить");
     setisEditProfilePopupOpen("popup_opened");
   }
 
-  function handleAddPlaceClick() {
+  const handleAddPlaceClick = () => {
     setButtonText("Создать");
     setisAddPlacePopupOpen("popup_opened");
   }
 
-  function handleCardDeleteClick(card) {
+  const handleCardDeleteClick = (card) => {
     setDeletedCard(card);
     setButtonText("Да");
     setisConfirmPopupOpen("popup_opened");
   }
 
-  function handleCardClick(card) {
+  const handleCardClick = useCallback((card) => {
     setSelectedCard(card);
-  }
+  }, []);
 
-  function handleInfoTooltip() {
+  const handleInfoTooltip = () => {
     setisInfoTooltipPopupOpen("popup_opened");
   }
 
-  function closeAllPopups() {
+  const closeAllPopups = () => {
     setisEditAvatarPopupOpen("");
     setisEditProfilePopupOpen("");
     setisAddPlacePopupOpen("");

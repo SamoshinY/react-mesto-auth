@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "../pages/index.css";
 import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
-function Login({onLogin}) {
+const Login = ({onLogin}) => {
   const {
     values,
     handleChange,

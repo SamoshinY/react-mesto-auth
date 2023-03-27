@@ -1,6 +1,6 @@
 import logo from "../images/Logo.svg";
 
-function Header({ onlogOut, userData, loggedIn, onAuth, buttonText }) {
+const Header = ({ onlogOut, userData, loggedIn, onAuth, buttonText }) => {
   return (
     <header className="header">
       <img className="header__logo" src={logo} alt="Логотип Место" />

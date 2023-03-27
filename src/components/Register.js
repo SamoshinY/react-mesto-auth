@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import "../pages/index.css";
 import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
-function Register({onRegister}) {
+const Register = ({onRegister}) => {
   const {
     values,
     handleChange,

@@ -18,7 +18,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { useOpenAndClosePopup } from "../hooks/useOpenAndClosePopup";
 import * as Auth from "../utils/Auth";
 
-function App() {
+const App = () => {
   const {
     isEditAvatarPopupOpen,
     isEditProfilePopupOpen,
@@ -47,46 +47,6 @@ function App() {
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(true);
   const [headerButtonText, setHeaderButtonText] = useState("");
-  const [errorText, setErrorText] = useState("");
-
-  const handleLogin = useCallback(async (values) => {
-    try {
-      const data = await Auth.authorize(values);
-      handleAuth(data); 
-      checkToken();     
-    } catch (err) {
-      console.error(err);
-      setAuthResult(false);
-      handleInfoTooltip();
-    } finally {
-      setLoading(false);
-    }
-  },[]);
-
-  const handleAuth = useCallback((data) => {
-    if (!data) {
-      throw new Error("Ошибка аутентификации");
-    }
-    if (data) {
-      localStorage.setItem("token", data.token);
-      setLoggedIn(true);      
-    }
-  }, []);
-
-  const handleRegister = useCallback(async ({ password, email }) => {
-    try {
-      const data = await Auth.register({ password, email });      
-      setUserData(data.data)
-      setAuthResult(true);
-      handleInfoTooltip();
-    } catch (err) {
-      console.error(err);
-      setAuthResult(false);
-      handleInfoTooltip();
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   const checkToken = useCallback(async () => {
     try {
@@ -98,7 +58,7 @@ function App() {
       if (!user) {
         throw new Error("Нет данных");
       }
-      await setLoggedIn(true);
+      setLoggedIn(true);
       navigate("/", { replace: true });
       setUserData(user.data);
     } catch (err) {
@@ -106,7 +66,44 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [navigate]);
+
+  const handleLogin = useCallback(async (values) => {
+    try {
+      const data = await Auth.authorize(values);
+      if (!data) {
+        throw new Error("Ошибка аутентификации");
+      }
+      if (data) {
+        localStorage.setItem("token", data.token);
+        setLoggedIn(true);
+      }
+      checkToken();
+    } catch (err) {
+      console.error(err);
+      setAuthResult(false);
+      handleInfoTooltip();
+    } finally {
+      setLoading(false);
+    }
+  }, [checkToken, handleInfoTooltip]);
+
+  const handleRegister = useCallback(
+    async ({ password, email }) => {
+      try {
+        await Auth.register({ password, email });
+        setAuthResult(true);
+        handleInfoTooltip();
+      } catch (err) {
+        console.error(err);
+        setAuthResult(false);
+        handleInfoTooltip();
+      } finally {
+        setLoading(false);
+      }
+    },
+    [handleInfoTooltip]
+  );
 
   const handleLogOut = useCallback(() => {
     setLoggedIn(false);
@@ -114,13 +111,10 @@ function App() {
     localStorage.removeItem("token");
     navigate("/sign-in", { replace: true });
     setHeaderButtonText("Регистрация");
-  },[]);
+  }, [navigate]);
 
   useEffect(() => {
     checkToken();
-  }, []);
-
-  useEffect(() => {
     if (loggedIn) {
       Promise.all([api.getInfoMe(), api.getInitialCards()])
         .then(([userData, cardsData]) => {
@@ -129,31 +123,37 @@ function App() {
         })
         .catch((err) => console.error(err));
     }
-  }, [loggedIn]);
+  }, [loggedIn, checkToken]);
 
-  function handleCardLike(card) {
-    const isLiked = card.likes.some((like) => like._id === currentUser._id);
-    api
-      .changeLikeCardStatus(card._id, isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
-        );
-      })
-      .catch((err) => console.error(err));
-  }
+  const handleCardLike = useCallback(
+    (card) => {
+      const isLiked = card.likes.some((like) => like._id === currentUser._id);
+      api
+        .changeLikeCardStatus(card._id, isLiked)
+        .then((newCard) => {
+          setCards((state) =>
+            state.map((c) => (c._id === card._id ? newCard : c))
+          );
+        })
+        .catch((err) => console.error(err));
+    },
+    [currentUser]
+  );
 
-  function handleCardDelete(card) {
-    api
-      .deleteCard(card._id)
-      .then(() => {
-        setCards(cards.filter((c) => c._id !== card._id));
-        closeAllPopups();
-      })
-      .catch((err) => console.error(err));
-  }
+  const handleCardDelete = useCallback(
+    (card) => {
+      api
+        .deleteCard(card._id)
+        .then(() => {
+          setCards(cards.filter((c) => c._id !== card._id));
+          closeAllPopups();
+        })
+        .catch((err) => console.error(err));
+    },
+    [cards, closeAllPopups]
+  );
 
-  function handleUpdateUser(info) {
+  const handleUpdateUser = (info) => {
     setButtonText("Сохранение...");
     api
       .editUserProfile(info)
@@ -163,9 +163,9 @@ function App() {
       })
       .catch((err) => console.error(err))
       .finally(() => setButtonText(buttonText));
-  }
+  };
 
-  function handleUpdateAvatar(link) {
+  const handleUpdateAvatar = (link) => {
     setButtonText("Сохранение...");
     api
       .changeUserAvatar(link)
@@ -175,9 +175,9 @@ function App() {
       })
       .catch((err) => console.error(err))
       .finally(() => setButtonText(buttonText));
-  }
+  };
 
-  function handleAddPlace(place) {
+  const handleAddPlace = (place) => {
     setButtonText("Сохранение...");
     api
       .addNewCard(place)
@@ -187,7 +187,7 @@ function App() {
       })
       .catch((err) => console.error(err))
       .finally(() => setButtonText(buttonText));
-  }
+  };
 
   const handleNavAuth = () => {
     if (headerButtonText === "Регистрация") {
@@ -198,6 +198,10 @@ function App() {
       navigate("/sign-in", { replace: true });
     }
   };
+
+  if (loading) {
+    return "Загрузка...";
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -236,8 +240,7 @@ function App() {
         <InfoTooltip
           isOpen={isInfoTooltipPopupOpen}
           onClose={closeAllPopups}
-          authResult={authResult}
-          errorText={errorText}
+          authResult={authResult}          
         />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         <EditAvatarPopup
@@ -268,6 +271,6 @@ function App() {
       </div>
     </CurrentUserContext.Provider>
   );
-}
+};
 
 export default App;
