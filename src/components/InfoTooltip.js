@@ -22,22 +22,24 @@ function InfoTooltip({ isOpen, onClose, authResult }) {
       onMouseDown={(evt) => evt.target === evt.currentTarget && onClose()}
     >
       <div className="popup__container">
-        {authResult ? 
-        <img
-          className="popup__infoTooltip-img"
-          src={successfulImg}
-          alt="Вы успешно зарегистрировались!"
-        />
-        : <img
-        className="popup__infoTooltip-img"
-        src={failedImg}
-        alt="Что-то пошло не так!"
-      />}
+        {authResult ? (
+          <img
+            className="popup__infoTooltip-img"
+            src={successfulImg}
+            alt="Вы успешно зарегистрировались!"
+          />
+        ) : (
+          <img
+            className="popup__infoTooltip-img"
+            src={failedImg}
+            alt="Что-то пошло не так!"
+          />
+        )}
         <p className="popup__infoTooltip-text">
           {authResult
             ? "Вы успешно зарегистрировались!"
             : "Что-то пошло не так! Попробуйте еще раз."}
-        </p>        
+        </p>
         <button
           onClick={onClose}
           type="button"
