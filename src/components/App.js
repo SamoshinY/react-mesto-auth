@@ -46,7 +46,7 @@ const App = () => {
   const [authResult, setAuthResult] = useState(false);
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [headerButtonText, setHeaderButtonText] = useState("");
+  const [headerButtonText, setHeaderButtonText] = useState("Регистрация");
 
   const checkToken = useCallback(async () => {
     try {
