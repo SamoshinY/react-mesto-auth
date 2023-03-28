@@ -1,19 +1,4 @@
-import { useEffect } from "react";
-
 function ImagePopup({ card, onClose }) {
-  useEffect(() => {
-    const handleEscDown = (evt) => {
-      if (evt.key === 'Escape') {        
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleEscDown);
-    return () => {
-      document.removeEventListener("keydown", handleEscDown);
-    };
-  }, [onClose]);
-
   return (
     <div
       className={`popup popup_type_image popup_dark ${

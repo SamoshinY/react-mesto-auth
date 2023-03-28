@@ -10,34 +10,44 @@ export const useOpenAndClosePopup = () => {
   const [buttonText, setButtonText] = useState("");
   const [deletedCard, setDeletedCard] = useState({});
 
-  const handleEditAvatarClick = () => {
-    setButtonText("Сохранить");
-    setisEditAvatarPopupOpen("popup_opened");
-  }
+  const handleEscDown = (evt) => {
+    if (evt.key === "Escape") {
+      closeAllPopups();
+    }
+  };
 
-  const handleEditProfileClick = () =>  {
-    setButtonText("Сохранить");
-    setisEditProfilePopupOpen("popup_opened");
-  }
+  const openPopup = (popupOpenSetter, textButton) => {
+    popupOpenSetter("popup_opened");
+    if (textButton) {
+      setButtonText(textButton);
+    }
+    document.addEventListener("keydown", handleEscDown);
+  };
+
+  const handleEditAvatarClick = () => {
+    openPopup(setisEditAvatarPopupOpen, "Сохранить");
+  };
+
+  const handleEditProfileClick = () => {
+    openPopup(setisEditProfilePopupOpen, "Сохранить");
+  };
 
   const handleAddPlaceClick = () => {
-    setButtonText("Создать");
-    setisAddPlacePopupOpen("popup_opened");
-  }
+    openPopup(setisAddPlacePopupOpen, "Создать");
+  };
 
   const handleCardDeleteClick = (card) => {
     setDeletedCard(card);
-    setButtonText("Да");
-    setisConfirmPopupOpen("popup_opened");
-  }
+    openPopup(setisConfirmPopupOpen, "Да");
+  };
 
   const handleCardClick = useCallback((card) => {
     setSelectedCard(card);
   }, []);
 
   const handleInfoTooltip = () => {
-    setisInfoTooltipPopupOpen("popup_opened");
-  }
+    openPopup(setisInfoTooltipPopupOpen);
+  };
 
   const closeAllPopups = () => {
     setisEditAvatarPopupOpen("");
@@ -46,7 +56,8 @@ export const useOpenAndClosePopup = () => {
     setisConfirmPopupOpen("");
     setisInfoTooltipPopupOpen("");
     setSelectedCard({});
-  }
+    document.removeEventListener("keydown", handleEscDown);
+  };
 
   return {
     isEditAvatarPopupOpen,
@@ -66,4 +77,4 @@ export const useOpenAndClosePopup = () => {
     closeAllPopups,
     setButtonText,
   };
-}
+};

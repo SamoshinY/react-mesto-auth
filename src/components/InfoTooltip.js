@@ -1,21 +1,7 @@
-import { useEffect } from "react";
 import successfulImg from "../images/successfulImg.svg";
 import failedImg from "../images/failedImg.svg";
 
 function InfoTooltip({ isOpen, onClose, authResult }) {
-  useEffect(() => {
-    const handleEscDown = (evt) => {
-      if (evt.key === "Escape") {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleEscDown);
-    return () => {
-      document.removeEventListener("keydown", handleEscDown);
-    };
-  }, [onClose]);
-
   return (
     <div
       className={`popup ${isOpen}`}

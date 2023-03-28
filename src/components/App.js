@@ -68,25 +68,29 @@ const App = () => {
     }
   }, [navigate]);
 
-  const handleLogin = useCallback(async (values) => {
-    try {
-      const data = await Auth.authorize(values);
-      if (!data) {
-        throw new Error("Ошибка аутентификации");
+  const handleLogin = useCallback(
+    async (values) => {
+      try {
+        const data = await Auth.authorize(values);
+        if (!data) {
+          throw new Error("Ошибка аутентификации");
+        }
+        if (data) {
+          localStorage.setItem("token", data.token);
+          setLoggedIn(true);
+        }
+        navigate("/", { replace: true });
+        setUserData(values);
+      } catch (err) {
+        console.error(err);
+        setAuthResult(false);
+        handleInfoTooltip();
+      } finally {
+        setLoading(false);
       }
-      if (data) {
-        localStorage.setItem("token", data.token);
-        setLoggedIn(true);
-      }
-      checkToken();
-    } catch (err) {
-      console.error(err);
-      setAuthResult(false);
-      handleInfoTooltip();
-    } finally {
-      setLoading(false);
-    }
-  }, [checkToken, handleInfoTooltip]);
+    },
+    [navigate, handleInfoTooltip]
+  );
 
   const handleRegister = useCallback(
     async ({ password, email }) => {
@@ -115,6 +119,9 @@ const App = () => {
 
   useEffect(() => {
     checkToken();
+  }, [checkToken]);
+
+  useEffect(() => {
     if (loggedIn) {
       Promise.all([api.getInfoMe(), api.getInitialCards()])
         .then(([userData, cardsData]) => {
@@ -123,7 +130,7 @@ const App = () => {
         })
         .catch((err) => console.error(err));
     }
-  }, [loggedIn, checkToken]);
+  }, [loggedIn]);
 
   const handleCardLike = useCallback(
     (card) => {
@@ -140,18 +147,15 @@ const App = () => {
     [currentUser]
   );
 
-  const handleCardDelete = useCallback(
-    (card) => {
-      api
-        .deleteCard(card._id)
-        .then(() => {
-          setCards(cards.filter((c) => c._id !== card._id));
-          closeAllPopups();
-        })
-        .catch((err) => console.error(err));
-    },
-    [cards, closeAllPopups]
-  );
+  const handleCardDelete = (card) => {
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards(cards.filter((c) => c._id !== card._id));
+        closeAllPopups();
+      })
+      .catch((err) => console.error(err));
+  };
 
   const handleUpdateUser = (info) => {
     setButtonText("Сохранение...");
@@ -240,7 +244,7 @@ const App = () => {
         <InfoTooltip
           isOpen={isInfoTooltipPopupOpen}
           onClose={closeAllPopups}
-          authResult={authResult}          
+          authResult={authResult}
         />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         <EditAvatarPopup
