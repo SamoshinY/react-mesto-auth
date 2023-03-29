@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom";
-import Authorize from "./Autorize";
+import Authorize from "./Authorize";
 
-const Register = ({ onLogin }) => {
+const Register = ({ onRegister }) => {
   return (
     <>
       <Authorize
-        onAuthorize={onLogin}
+        onAuthorize={onRegister}
         heading={"Регистрация"}
         textButton={"Зарегистрироваться"}
       />

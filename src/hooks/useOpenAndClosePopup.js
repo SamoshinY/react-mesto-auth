@@ -24,6 +24,11 @@ export const useOpenAndClosePopup = () => {
     document.addEventListener("keydown", handleEscDown);
   };
 
+  const handleInfoTooltip = () => {
+    setisInfoTooltipPopupOpen("popup_opened");
+    document.addEventListener("keydown", handleEscDown);
+  };
+
   const handleEditAvatarClick = () => {
     openPopup(setisEditAvatarPopupOpen, "Сохранить");
   };
@@ -45,10 +50,6 @@ export const useOpenAndClosePopup = () => {
     setSelectedCard(card);
   }, []);
 
-  const handleInfoTooltip = () => {
-    openPopup(setisInfoTooltipPopupOpen);
-  };
-
   const closeAllPopups = () => {
     setisEditAvatarPopupOpen("");
     setisEditProfilePopupOpen("");
@@ -60,20 +61,20 @@ export const useOpenAndClosePopup = () => {
   };
 
   return {
+    isInfoTooltipPopupOpen,
     isEditAvatarPopupOpen,
     isEditProfilePopupOpen,
     isAddPlacePopupOpen,
     isConfirmPopupOpen,
-    isInfoTooltipPopupOpen,
     buttonText,
     selectedCard,
     deletedCard,
+    handleInfoTooltip,
     handleEditAvatarClick,
     handleEditProfileClick,
     handleAddPlaceClick,
     handleCardDeleteClick,
     handleCardClick,
-    handleInfoTooltip,
     closeAllPopups,
     setButtonText,
   };

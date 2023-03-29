@@ -1,4 +1,4 @@
-import Authorize from "./Autorize";
+import Authorize from "./Authorize";
 
 const Login = ({ onLogin }) => {
   return (

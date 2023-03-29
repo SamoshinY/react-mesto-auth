@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "../pages/index.css";
 import Header from "./Header";
 import Main from "./Main";
@@ -16,106 +16,43 @@ import ProtectedRoute from "./ProtectedRoute";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { useOpenAndClosePopup } from "../hooks/useOpenAndClosePopup";
-import * as Auth from "../utils/Auth";
+import { useAuthorize } from "../hooks/useAuthorize";
 
 const App = () => {
   const {
+    isInfoTooltipPopupOpen,
     isEditAvatarPopupOpen,
     isEditProfilePopupOpen,
     isAddPlacePopupOpen,
-    isConfirmPopupOpen,
-    isInfoTooltipPopupOpen,
+    isConfirmPopupOpen,    
     buttonText,
     selectedCard,
     deletedCard,
+    handleInfoTooltip,
     handleEditAvatarClick,
     handleEditProfileClick,
     handleAddPlaceClick,
     handleCardDeleteClick,
-    handleCardClick,
-    handleInfoTooltip,
-    setButtonText,
+    handleCardClick,    
     closeAllPopups,
+    setButtonText,
   } = useOpenAndClosePopup();
 
-  const navigate = useNavigate();
+  const {
+    checkToken,
+    handleLogin,
+    handleRegister,
+    handleLogOut,
+    handleNavAuth,
+    loggedIn,
+    loading,
+    userData,
+    headerButtonText,
+    authResult      
+  } = useAuthorize(handleInfoTooltip);
 
   const [currentUser, setCurrentUser] = useState({});
-  const [cards, setCards] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [authResult, setAuthResult] = useState(false);
-  const [userData, setUserData] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [headerButtonText, setHeaderButtonText] = useState("Регистрация");
-
-  const checkToken = useCallback(async () => {
-    try {
-      const jwt = localStorage.getItem("token");
-      if (!jwt) {
-        throw new Error("Нет токена");
-      }
-      const user = await Auth.getContent(jwt);
-      if (!user) {
-        throw new Error("Нет данных");
-      }
-      setLoggedIn(true);
-      navigate("/", { replace: true });
-      setUserData(user.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [navigate]);
-
-  const handleLogin = useCallback(
-    async (values) => {
-      try {
-        const data = await Auth.authorize(values);
-        if (!data) {
-          throw new Error("Ошибка аутентификации");
-        }
-        if (data) {
-          localStorage.setItem("token", data.token);
-          setLoggedIn(true);
-        }
-        navigate("/", { replace: true });
-        setUserData(values);
-      } catch (err) {  /* блок catch */
-        console.error(err);
-        setAuthResult(false);
-        handleInfoTooltip();
-      } finally {
-        setLoading(false);
-      }
-    },
-    [navigate, handleInfoTooltip]
-  );
-
-  const handleRegister = useCallback(
-    async ({ password, email }) => {
-      try {
-        await Auth.register({ password, email });
-        setAuthResult(true);
-        handleInfoTooltip();
-      } catch (err) {   /* блок catch */
-        console.error(err);
-        setAuthResult(false);
-        handleInfoTooltip();
-      } finally {
-        setLoading(false);
-      }
-    },
-    [handleInfoTooltip]
-  );
-
-  const handleLogOut = useCallback(() => {
-    setLoggedIn(false);
-    setUserData({});
-    localStorage.removeItem("token");
-    navigate("/sign-in", { replace: true });
-    setHeaderButtonText("Регистрация");
-  }, [navigate]);
+  const [cards, setCards] = useState([]);  
 
   useEffect(() => {
     checkToken();
@@ -191,16 +128,6 @@ const App = () => {
       })
       .catch((err) => console.error(err))
       .finally(() => setButtonText(buttonText));
-  };
-
-  const handleNavAuth = () => {
-    if (headerButtonText === "Регистрация") {
-      navigate("/sign-up", { replace: true });
-      setHeaderButtonText("Войти");
-    } else if (headerButtonText === "Войти") {
-      setHeaderButtonText("Регистрация");
-      navigate("/sign-in", { replace: true });
-    }
   };
 
   if (loading) {
