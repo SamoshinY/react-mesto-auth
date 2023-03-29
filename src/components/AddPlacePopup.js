@@ -14,7 +14,7 @@ function AddPlacePopup(props) {
   } = useFormAndValidation();
 
   useEffect(() => {
-    setValues("");
+    setValues({});
     resetForm();
   }, [props.isOpen, setValues, resetForm]);
 

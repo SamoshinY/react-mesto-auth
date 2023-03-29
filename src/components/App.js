@@ -81,7 +81,7 @@ const App = () => {
         }
         navigate("/", { replace: true });
         setUserData(values);
-      } catch (err) {
+      } catch (err) {  /* блок catch */
         console.error(err);
         setAuthResult(false);
         handleInfoTooltip();
@@ -98,7 +98,7 @@ const App = () => {
         await Auth.register({ password, email });
         setAuthResult(true);
         handleInfoTooltip();
-      } catch (err) {
+      } catch (err) {   /* блок catch */
         console.error(err);
         setAuthResult(false);
         handleInfoTooltip();
