@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import "../pages/index.css";
 import Header from "./Header";
@@ -16,15 +16,20 @@ import ProtectedRoute from "./ProtectedRoute";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { useOpenAndClosePopup } from "../hooks/useOpenAndClosePopup";
+import { useFormSubmitHandlers } from "../hooks/useFormSubmitHandlers";
 import { useAuthorize } from "../hooks/useAuthorize";
+import { useCardHandlers } from "../hooks/useCardHandlers";
 
 const App = () => {
+  const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
+
   const {
     isInfoTooltipPopupOpen,
     isEditAvatarPopupOpen,
     isEditProfilePopupOpen,
     isAddPlacePopupOpen,
-    isConfirmPopupOpen,    
+    isConfirmPopupOpen,
     buttonText,
     selectedCard,
     deletedCard,
@@ -33,7 +38,7 @@ const App = () => {
     handleEditProfileClick,
     handleAddPlaceClick,
     handleCardDeleteClick,
-    handleCardClick,    
+    handleCardClick,
     closeAllPopups,
     setButtonText,
   } = useOpenAndClosePopup();
@@ -48,11 +53,27 @@ const App = () => {
     loading,
     userData,
     headerButtonText,
-    authResult      
+    authResult,
   } = useAuthorize(handleInfoTooltip);
 
-  const [currentUser, setCurrentUser] = useState({});
-  const [cards, setCards] = useState([]);  
+  const { handleUpdateUser, handleUpdateAvatar, handleAddPlace } =
+    useFormSubmitHandlers(
+      api,
+      setButtonText,
+      buttonText,
+      cards,
+      closeAllPopups,
+      setCards,
+      setCurrentUser
+    );
+
+  const { handleCardLike, handleCardDelete } = useCardHandlers(
+    api,
+    currentUser,
+    setCards,
+    cards,
+    closeAllPopups
+  );
 
   useEffect(() => {
     checkToken();
@@ -69,70 +90,9 @@ const App = () => {
     }
   }, [loggedIn]);
 
-  const handleCardLike = useCallback(
-    (card) => {
-      const isLiked = card.likes.some((like) => like._id === currentUser._id);
-      api
-        .changeLikeCardStatus(card._id, isLiked)
-        .then((newCard) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
-          );
-        })
-        .catch((err) => console.error(err));
-    },
-    [currentUser]
-  );
-
-  const handleCardDelete = (card) => {
-    api
-      .deleteCard(card._id)
-      .then(() => {
-        setCards(cards.filter((c) => c._id !== card._id));
-        closeAllPopups();
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const handleUpdateUser = (info) => {
-    setButtonText("Сохранение...");
-    api
-      .editUserProfile(info)
-      .then((data) => {
-        setCurrentUser(data);
-        closeAllPopups();
-      })
-      .catch((err) => console.error(err))
-      .finally(() => setButtonText(buttonText));
-  };
-
-  const handleUpdateAvatar = (link) => {
-    setButtonText("Сохранение...");
-    api
-      .changeUserAvatar(link)
-      .then((data) => {
-        setCurrentUser(data);
-        closeAllPopups();
-      })
-      .catch((err) => console.error(err))
-      .finally(() => setButtonText(buttonText));
-  };
-
-  const handleAddPlace = (place) => {
-    setButtonText("Сохранение...");
-    api
-      .addNewCard(place)
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
-        closeAllPopups();
-      })
-      .catch((err) => console.error(err))
-      .finally(() => setButtonText(buttonText));
-  };
-
   if (loading) {
     return "Загрузка...";
-  }
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
