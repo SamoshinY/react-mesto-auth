@@ -9,5 +9,6 @@
 @media screen and (max-width: 560px) {
   .header {
     min-height: 56px;
+    flex-direction: column-reverse;
   }
 }

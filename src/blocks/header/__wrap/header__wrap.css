@@ -1,3 +1,9 @@
 .header__wrap {
-    display: flex;
+  display: flex;
+}
+
+@media screen and (max-width: 560px) {
+  .header__wrap {    
+    width: 100%;    
+  }
 }

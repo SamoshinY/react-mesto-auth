@@ -9,3 +9,10 @@
   border: none;
   text-decoration: none;
 }
+
+@media screen and (max-width: 560px) {
+  .header__email {
+    margin: 40px auto 18px;
+  }
+}
+

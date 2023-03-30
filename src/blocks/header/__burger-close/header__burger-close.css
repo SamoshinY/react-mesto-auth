@@ -1,0 +1,19 @@
+.header__burger-close {
+  display: none;
+  padding: 0;
+  border: 0;
+  background-image: url(../../../images/close-icon.svg);
+  background-color: transparent;
+  transition: 0.3s opacity;
+  cursor: pointer;
+  margin: auto 30px auto auto;
+}
+
+@media screen and (max-width: 560px) {
+  .header__burger-close {
+    display: block;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+  }
+}

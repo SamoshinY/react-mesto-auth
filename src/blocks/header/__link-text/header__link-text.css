@@ -16,3 +16,11 @@
 .header__link-text:hover {
   opacity: .6;
 }
+
+@media screen and (max-width: 560px) {
+  .header__link-text {
+    padding-bottom: 0;
+    margin: 0 auto 40px;    
+  }
+}
+
