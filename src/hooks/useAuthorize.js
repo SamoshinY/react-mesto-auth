@@ -43,7 +43,7 @@ export const useAuthorize = (handleInfoTooltip) => {
       }
       navigate("/", { replace: true });
       setUserData(values);
-    } catch (err) { /*блок catch здесь!!!!!!*/
+    } catch (err) {
       console.error(err);
       setAuthResult(false);
       handleInfoTooltip();
@@ -56,7 +56,7 @@ export const useAuthorize = (handleInfoTooltip) => {
     try {
       await Auth.register({ password, email });
       setAuthResult(true);
-    } catch (err) { /*блок catch здесь!!!!!!!!*/
+    } catch (err) {
       console.error(err);
       setAuthResult(false);
       handleInfoTooltip();

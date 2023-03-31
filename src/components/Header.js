@@ -2,8 +2,7 @@ import logo from "../images/Logo.svg";
 import { useState } from "react";
 
 const Header = ({ onlogOut, userData, loggedIn, onAuth, buttonText }) => {
-
-  const currentDisplaying = window.matchMedia("(min-width: 560px)");  
+  const currentDisplaying = window.matchMedia("(min-width: 560px)");
   const [isListOpen, setIsListOpen] = useState(currentDisplaying.matches);
 
   const handleBurgerClick = () => {

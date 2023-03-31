@@ -17,3 +17,7 @@
     height: 20px;
   }
 }
+
+.header__burger-close:hover {
+  opacity: .6;
+}
