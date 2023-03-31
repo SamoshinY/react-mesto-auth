@@ -9,7 +9,7 @@
 }
 
 @media screen and (max-width: 560px) {
-  .form__input {
-    padding-bottom: 45px;
+  .auth-form__input {
+    padding-bottom: 173px;
   }
 }
