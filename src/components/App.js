@@ -92,7 +92,7 @@ const App = () => {
 
   if (loading) {
     return "Загрузка...";
-  };
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -123,7 +123,9 @@ const App = () => {
           />
           <Route
             path="/sign-up"
-            element={<Register onRegister={handleRegister} />}
+            element={
+              <Register onRegister={handleRegister} onAuth={handleNavAuth} />
+            }
           />
           <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
         </Routes>
