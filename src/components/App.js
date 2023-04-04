@@ -48,12 +48,11 @@ const App = () => {
     handleLogin,
     handleRegister,
     handleLogOut,
-    handleNavAuth,
     loggedIn,
     loading,
     userData,
-    headerButtonText,
     authResult,
+    errorText,
   } = useAuthorize(handleInfoTooltip);
 
   const { handleUpdateUser, handleUpdateAvatar, handleAddPlace } =
@@ -97,13 +96,7 @@ const App = () => {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div>
-        <Header
-          onlogOut={handleLogOut}
-          onAuth={handleNavAuth}
-          userData={userData}
-          loggedIn={loggedIn}
-          buttonText={headerButtonText}
-        />
+        <Header onLogOut={handleLogOut} email={loggedIn && userData.email} />
         <Routes>
           <Route
             path="/"
@@ -124,7 +117,7 @@ const App = () => {
           <Route
             path="/sign-up"
             element={
-              <Register onRegister={handleRegister} onAuth={handleNavAuth} />
+              <Register onRegister={handleRegister} onLogOut={handleLogOut} />
             }
           />
           <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
@@ -134,6 +127,7 @@ const App = () => {
           isOpen={isInfoTooltipPopupOpen}
           onClose={closeAllPopups}
           authResult={authResult}
+          errorText={errorText}
         />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         <EditAvatarPopup

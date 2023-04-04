@@ -1,34 +1,85 @@
 import logo from "../images/Logo.svg";
 import { useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
+// import { CSSTransition } from "react-transition-group";
 
-const Header = ({ onlogOut, userData, loggedIn, onAuth, buttonText }) => {
-  const currentDisplaying = window.matchMedia("(min-width: 560px)");
-  const [isListOpen, setIsListOpen] = useState(currentDisplaying.matches);
+const Header = ({ email, onLogOut }) => {
+  const currentDisplaying = window.matchMedia("(min-width: 560px)").matches;
+  const [navOpen, setNavOpen] = useState(currentDisplaying);
+
+  const handleClick = () => {
+    onLogOut();
+    currentDisplaying ? setNavOpen(true) : setNavOpen(false);
+  };
 
   const handleBurgerClick = () => {
-    setIsListOpen(!isListOpen);
+    setNavOpen(!navOpen);
   };
-  const Burger = () => {
+
+  const NavBar = () => {
     return (
-      <button
-        type="button"
-        className="header__burger"
-        onClick={handleBurgerClick}
-      >
-        <span className="header__burger-line"></span>
-        <span className="header__burger-line"></span>
-        <span className="header__burger-line"></span>
-      </button>
+      <div className="header__nav">
+        <>
+          {email && <p className="header__email">{email}</p>}
+          {
+            <Routes>
+              <Route
+                path="sign-up"
+                element={
+                  <Link to="/sign-in" className="header__link-text">
+                    Войти
+                  </Link>
+                }
+              />
+              <Route
+                path="sign-in"
+                element={
+                  <Link to="/sign-up" className="header__link-text">
+                    Регистрация
+                  </Link>
+                }
+              />
+              <Route
+                path="/"
+                element={
+                  <Link
+                    to="/sign-in"
+                    className="header__link-text"
+                    onClick={handleClick}
+                  >
+                    Выйти
+                  </Link>
+                }
+              />
+            </Routes>
+          }
+        </>
+      </div>
     );
   };
 
-  const CloseList = () => {
+  const BurgerMenu = () => {
     return (
-      <button
-        onClick={handleBurgerClick}
-        type="button"
-        className="header__burger-close"
-      ></button>
+      <>
+        {!navOpen && (
+          <button
+            type="button"
+            className="header__burger"
+            onClick={handleBurgerClick}
+          >
+            <span className="header__burger-line"></span>
+            <span className="header__burger-line"></span>
+            <span className="header__burger-line"></span>
+          </button>
+        )}
+        {navOpen && (
+          <button
+            onClick={handleBurgerClick}
+            type="button"
+            className="header__burger-close"
+          ></button>
+        )}
+      </>
     );
   };
 
@@ -36,32 +87,10 @@ const Header = ({ onlogOut, userData, loggedIn, onAuth, buttonText }) => {
     <header className="header">
       <div className="header__wrap">
         <img className="header__logo" src={logo} alt="Логотип Место" />
-        {!isListOpen && <Burger />}
-        {isListOpen && <CloseList />}
+        {email && <BurgerMenu />}
+        {!email && <NavBar />}
       </div>
-      {isListOpen && (
-        <div className="header__nav">
-          {loggedIn && <p className="header__email">{userData.email}</p>}
-          {loggedIn && (
-            <button
-              className="header__link-text"
-              type="button"
-              onClick={onlogOut}
-            >
-              Выйти
-            </button>
-          )}
-          {!loggedIn && (
-            <button
-              className="header__link-text"
-              type="button"
-              onClick={onAuth}
-            >
-              {buttonText}
-            </button>
-          )}
-        </div>
-      )}
+      {email && navOpen && <NavBar />}
     </header>
   );
 };

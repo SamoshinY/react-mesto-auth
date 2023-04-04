@@ -12,7 +12,7 @@ const makeRequest = (url, method, body, token) => {
   if (body) {
     config.body = JSON.stringify(body);
   }
-  return fetch(`${BASE_URL}${url}`, config).then(checkResponse);
+  return fetch(`${BASE_URL}${url}`, config).then((res) => res.json());
 };
 
 export const register = ({ password, email }) => {
@@ -26,5 +26,3 @@ export const authorize = ({ password, email }) => {
 export const getContent = (token) => {
   return makeRequest("/users/me", "GET", undefined, token);
 };
-
-const checkResponse = (res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);

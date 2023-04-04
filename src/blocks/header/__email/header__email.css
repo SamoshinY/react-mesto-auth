@@ -4,15 +4,16 @@
   line-height: 22px;
   background-color: #000;
   color: #fff;
-  margin: 7px 24px 0 0;
-  padding: 0;
+  margin: 0;
+  padding: 12px 24px 0 0;
   border: none;
   text-decoration: none;
 }
 
 @media screen and (max-width: 560px) {
-  .header__email {
-    margin: 40px auto 18px;
+  .header__email {    
+    margin: 0 auto 18px;
+    padding-top: 18px;   
   }
 }
 

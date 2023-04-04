@@ -1,7 +1,7 @@
 import successfulImg from "../images/successfulImg.svg";
 import failedImg from "../images/failedImg.svg";
 
-function InfoTooltip({ isOpen, onClose, authResult }) {
+function InfoTooltip({ isOpen, onClose, authResult, errorText }) {
   return (
     <div
       className={`popup ${isOpen}`}
@@ -24,8 +24,9 @@ function InfoTooltip({ isOpen, onClose, authResult }) {
         <p className="popup__infoTooltip-text">
           {authResult
             ? "Вы успешно зарегистрировались!"
-            : "Что-то пошло не так! Попробуйте еще раз."}
+            : "Что-то пошло не так! Попробуйте еще раз."}            
         </p>
+        <p className="popup__infoTooltip-error-text">{errorText}</p>
         <button
           onClick={onClose}
           type="button"

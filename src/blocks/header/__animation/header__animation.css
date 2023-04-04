@@ -1,0 +1,26 @@
+.header__animation-enter {  
+  transform: translateY(0);  
+  max-height: 0;
+  transition: max-height 1s transform 1s;
+}
+
+.header__animation-enter-active {  
+  transform: translateY(100%);  
+  transition: 1s;
+  overflow: hidden;
+  max-height: 100vh;
+  transition: max-height 1s transform 1s;
+}
+
+.header__animation-exit {  
+  transform: translateY(100%);
+  overflow: hidden;
+  max-height: 100vh;
+  transition: max-height 1s transform 1s;
+}
+
+.header__animation-exit-active {  
+  transform: translateY(0);  
+  max-height: 0;
+  transition: max-height 1s transform 1s;
+}

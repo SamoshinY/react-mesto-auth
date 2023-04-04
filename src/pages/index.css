@@ -14,6 +14,7 @@
 @import url(../blocks/header/__burger-line/header__burger-line.css);
 @import url(../blocks/header/__nav/header__nav.css);
 @import url(../blocks/header/__burger-close/header__burger-close.css);
+@import url(../blocks/header/__animation/header__animation.css);
 
 @import url(../blocks/profile/profile.css);
 @import url(../blocks/profile/__image/profile__image.css);
@@ -72,3 +73,4 @@
 @import url(../blocks/popup/_dark/popup_dark.css);
 @import url(../blocks/popup/__infoTooltip-img/popup__infoTooltip-img.css);
 @import url(../blocks/popup/__infoTooltip-text/popup__infoTooltip-text.css);
+@import url(../blocks/popup/__infoTooltip-error-text/popup__infoTooltip-error-text.css);

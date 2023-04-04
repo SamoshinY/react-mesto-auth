@@ -5,10 +5,10 @@
   background-color: #000;
   color: #fff;
   margin: 0;
-  padding-bottom: 38px;
+  padding: 12px 0 0;
   border: none;
   text-decoration: none;
-  text-align: start;
+  
   cursor: pointer;
   transition: .3s opacity;
 }
@@ -18,9 +18,9 @@
 }
 
 @media screen and (max-width: 560px) {
-  .header__link-text {
-    padding-bottom: 0;
-    margin: 20px auto;
+  .header__link-text {    
+    padding: 0;
+    margin: 0 30px;
   }
 }
 

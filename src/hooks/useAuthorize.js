@@ -9,15 +9,15 @@ export const useAuthorize = (handleInfoTooltip) => {
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(true);
   const [authResult, setAuthResult] = useState(false);
-  const [headerButtonText, setHeaderButtonText] = useState("Регистрация");
+  const [errorText, setErrorText] = useState("");
 
   const checkToken = useCallback(async () => {
     try {
-      const jwt = localStorage.getItem("token");
-      if (!jwt) {
+      const token = localStorage.getItem("token");
+      if (!token) {
         throw new Error("Нет токена");
       }
-      const user = await Auth.getContent(jwt);
+      const user = await Auth.getContent(token);
       if (!user) {
         throw new Error("Нет данных");
       }
@@ -33,11 +33,14 @@ export const useAuthorize = (handleInfoTooltip) => {
 
   const handleLogin = async (values) => {
     try {
+      setErrorText("");
       const data = await Auth.authorize(values);
-      if (!data) {
+      if (data.error || data.message) {
+        setErrorText(data.error || data.message);
+        setAuthResult(false);
         throw new Error("Ошибка аутентификации");
       }
-      if (data) {
+      if (data.token) {
         localStorage.setItem("token", data.token);
         setLoggedIn(true);
       }
@@ -54,8 +57,17 @@ export const useAuthorize = (handleInfoTooltip) => {
 
   const handleRegister = async ({ password, email }) => {
     try {
-      await Auth.register({ password, email });
-      setAuthResult(true);
+      setErrorText("");
+      const user = await Auth.register({ password, email });
+      if (user.error || user.message) {
+        setErrorText(user.error || user.message);
+        setAuthResult(false);        
+        throw new Error("Ошибка регистрации");
+      }
+      if (user.data._id) {
+        setAuthResult(true);
+        handleInfoTooltip();
+      }
     } catch (err) {
       console.error(err);
       setAuthResult(false);
@@ -70,34 +82,17 @@ export const useAuthorize = (handleInfoTooltip) => {
     setUserData({});
     localStorage.removeItem("token");
     navigate("/sign-in", { replace: true });
-    setHeaderButtonText("Регистрация");
-  }, [navigate]);
-
-  const handleNavAuth = () => {
-    if (headerButtonText === "Регистрация") {
-      navigate("/sign-up", { replace: true });
-      setHeaderButtonText("Войти");
-    } else if (headerButtonText === "Войти") {
-      setHeaderButtonText("Регистрация");
-      navigate("/sign-in", { replace: true });
-    }
-  };
+  }, [navigate]); 
 
   return {
     checkToken,
     handleLogin,
     handleRegister,
     handleLogOut,
-    handleNavAuth,
     loggedIn,
     loading,
     userData,
-    headerButtonText,
     authResult,
-    setLoading,
-    setLoggedIn,
-    setUserData,
-    setAuthResult,
-    setHeaderButtonText,
+    errorText    
   };
 };

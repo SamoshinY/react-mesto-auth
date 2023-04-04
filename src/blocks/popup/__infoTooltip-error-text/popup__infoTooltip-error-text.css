@@ -1,0 +1,9 @@
+.popup__infoTooltip-error-text {
+    font-size: 14px;
+  line-height: 100%;
+  font-weight: 400;
+  margin: 0 auto 30px;
+  max-width: 358px;
+  text-align: center;
+  color: black;
+}
