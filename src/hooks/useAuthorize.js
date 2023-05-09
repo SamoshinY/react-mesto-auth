@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import * as Auth from "../utils/Auth";
+import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import * as Auth from '../utils/Auth';
 
 export const useAuthorize = (handleInfoTooltip) => {
   const navigate = useNavigate();
@@ -9,20 +9,20 @@ export const useAuthorize = (handleInfoTooltip) => {
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(true);
   const [authResult, setAuthResult] = useState(false);
-  const [errorText, setErrorText] = useState("");
+  const [errorText, setErrorText] = useState('');
 
   const checkToken = useCallback(async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error("Нет токена");
+        throw new Error('Нет токена');
       }
       const user = await Auth.getContent(token);
       if (!user) {
-        throw new Error("Нет данных");
+        throw new Error('Нет данных');
       }
       setLoggedIn(true);
-      navigate("/", { replace: true });
+      navigate('/', { replace: true });
       setUserData(user.data);
     } catch (err) {
       console.error(err);
@@ -33,18 +33,18 @@ export const useAuthorize = (handleInfoTooltip) => {
 
   const handleLogin = async (values) => {
     try {
-      setErrorText("");
+      setErrorText('');
       const data = await Auth.authorize(values);
       if (data.error || data.message) {
         setErrorText(data.error || data.message);
         setAuthResult(false);
-        throw new Error("Ошибка аутентификации");
+        throw new Error('Ошибка аутентификации');
       }
       if (data.token) {
-        localStorage.setItem("token", data.token);
+        localStorage.setItem('token', data.token);
         setLoggedIn(true);
       }
-      navigate("/", { replace: true });
+      navigate('/', { replace: true });
       setUserData(values);
     } catch (err) {
       console.error(err);
@@ -57,16 +57,17 @@ export const useAuthorize = (handleInfoTooltip) => {
 
   const handleRegister = async ({ password, email }) => {
     try {
-      setErrorText("");
+      setErrorText('');
       const user = await Auth.register({ password, email });
       if (user.error || user.message) {
         setErrorText(user.error || user.message);
-        setAuthResult(false);        
-        throw new Error("Ошибка регистрации");
+        setAuthResult(false);
+        throw new Error('Ошибка регистрации');
       }
       if (user.data._id) {
         setAuthResult(true);
         handleInfoTooltip();
+        navigate('/sign-in', { replace: true });
       }
     } catch (err) {
       console.error(err);
@@ -80,9 +81,9 @@ export const useAuthorize = (handleInfoTooltip) => {
   const handleLogOut = useCallback(() => {
     setLoggedIn(false);
     setUserData({});
-    localStorage.removeItem("token");
-    navigate("/sign-in", { replace: true });
-  }, [navigate]); 
+    localStorage.removeItem('token');
+    navigate('/sign-in', { replace: true });
+  }, [navigate]);
 
   return {
     checkToken,
@@ -93,6 +94,6 @@ export const useAuthorize = (handleInfoTooltip) => {
     loading,
     userData,
     authResult,
-    errorText    
+    errorText,
   };
 };

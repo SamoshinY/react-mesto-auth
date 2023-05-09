@@ -1,9 +1,7 @@
-function ImagePopup({ card, onClose }) {
+function ImagePopup({ card, onClose, isOpen }) {
   return (
     <div
-      className={`popup popup_type_image popup_dark ${
-        card.name && "popup_opened"
-      }`}
+      className={`popup popup_type_image ${isOpen} popup_dark }`}
       onMouseDown={(evt) => evt.target === evt.currentTarget && onClose()}
     >
       <div className="popup__image-container">

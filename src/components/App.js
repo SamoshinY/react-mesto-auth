@@ -1,24 +1,25 @@
-import { useState, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
-import "../pages/index.css";
-import Header from "./Header";
-import Main from "./Main";
-import Footer from "./Footer";
-import ImagePopup from "./ImagePopup";
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
-import AddPlacePopup from "./AddPlacePopup";
-import ConfirmPopup from "./ConfirmPopup";
-import Register from "./Register";
-import Login from "./Login";
-import InfoTooltip from "./InfoTooltip";
-import ProtectedRoute from "./ProtectedRoute";
-import api from "../utils/Api";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { useOpenAndClosePopup } from "../hooks/useOpenAndClosePopup";
-import { useFormSubmitHandlers } from "../hooks/useFormSubmitHandlers";
-import { useAuthorize } from "../hooks/useAuthorize";
-import { useCardHandlers } from "../hooks/useCardHandlers";
+import { useState, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import '../pages/index.css';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
+import ImagePopup from './ImagePopup';
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
+import ConfirmPopup from './ConfirmPopup';
+import Register from './Register';
+import Login from './Login';
+import InfoTooltip from './InfoTooltip';
+import ProtectedRoute from './ProtectedRoute';
+import api from '../utils/Api';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { useOpenAndClosePopup } from '../hooks/useOpenAndClosePopup';
+import { useFormSubmitHandlers } from '../hooks/useFormSubmitHandlers';
+import { useAuthorize } from '../hooks/useAuthorize';
+import { useCardHandlers } from '../hooks/useCardHandlers';
+import Spinner from './Spinner';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -30,6 +31,7 @@ const App = () => {
     isEditProfilePopupOpen,
     isAddPlacePopupOpen,
     isConfirmPopupOpen,
+    isImagePopupOpen,
     buttonText,
     selectedCard,
     deletedCard,
@@ -89,11 +91,9 @@ const App = () => {
     }
   }, [loggedIn]);
 
-  if (loading) {
-    return "Загрузка...";
-  }
-
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <CurrentUserContext.Provider value={currentUser}>
       <div>
         <Header onLogOut={handleLogOut} email={loggedIn && userData.email} />
@@ -129,7 +129,11 @@ const App = () => {
           authResult={authResult}
           errorText={errorText}
         />
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+          isOpen={isImagePopupOpen}
+        />
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
