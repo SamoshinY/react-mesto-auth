@@ -13,12 +13,13 @@ export const useAuthorize = (handleInfoTooltip) => {
 
   const checkToken = useCallback(async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('Нет токена');
-      }
-      const user = await Auth.getContent(token);
-      if (!user) {
+      // const token = localStorage.getItem('token');
+      // if (!token) {
+      //   throw new Error('Нет токена');
+      // }
+      const user = await Auth.getContent(/*token*/);
+      console.log(user);
+      if (!user.email) {
         throw new Error('Нет данных');
       }
       setLoggedIn(true);
@@ -35,15 +36,17 @@ export const useAuthorize = (handleInfoTooltip) => {
     try {
       setErrorText('');
       const data = await Auth.authorize(values);
-      if (data.error || data.message) {
+      console.log(data)
+      
+      if (data.error  || data.message !== "Вы успешно прошли авторизацию!") {
         setErrorText(data.error || data.message);
         setAuthResult(false);
         throw new Error('Ошибка аутентификации');
       }
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        setLoggedIn(true);
-      }
+      // if (data.token) {
+      // localStorage.setItem('token', data.token);
+      setLoggedIn(true);
+      // }
       navigate('/', { replace: true });
       setUserData(values);
     } catch (err) {
@@ -80,8 +83,8 @@ export const useAuthorize = (handleInfoTooltip) => {
 
   const handleLogOut = useCallback(() => {
     setLoggedIn(false);
-    setUserData({});
-    localStorage.removeItem('token');
+    setUserData({});    
+    // localStorage.removeItem('token');
     navigate('/sign-in', { replace: true });
   }, [navigate]);
 

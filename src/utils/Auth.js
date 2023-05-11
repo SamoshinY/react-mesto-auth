@@ -1,13 +1,14 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://samoshin-project.nomoredomains.monster';
 
 const makeRequest = (url, method, body, token) => {
   const headers = { 'Content-Type': 'application/json' };
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
+  // if (token) {
+  //   headers['Authorization'] = `Bearer ${token}`;
+  // }
   const config = {
     method,
     headers,
+    credentials: 'include',
   };
   if (body) {
     config.body = JSON.stringify(body);
@@ -23,6 +24,6 @@ export const authorize = ({ password, email }) => {
   return makeRequest('/signin', 'POST', { password, email });
 };
 
-export const getContent = (token) => {
-  return makeRequest('/users/me', 'GET', undefined, token);
+export const getContent = (/*token*/) => {
+  return makeRequest('/users/me', 'GET', undefined /*, token*/);
 };

@@ -7,15 +7,32 @@ class Api {
   _checkResponseStatus = () => (res) =>
     res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 
+  _makeRequest = (url, method, body, token) => {
+    
+    const config = {
+      method,
+      credentials: 'include',
+      headers: this._headers,
+    };
+    if (body) {
+      config.body = JSON.stringify(body);
+    }
+    return fetch(`${this._baseUrl}${url}`, config).then(
+      this._checkResponseStatus()
+    );
+  };
+
   getInfoMe = () =>
     fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
+      credentials: 'include',
     }).then(this._checkResponseStatus());
 
   editUserProfile = (info) =>
     fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
-      method: "PATCH",
+      credentials: 'include',
+      method: 'PATCH',
       body: JSON.stringify({
         name: info.name,
         about: info.about,
@@ -25,12 +42,14 @@ class Api {
   getInitialCards = () =>
     fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
+      credentials: 'include',
     }).then(this._checkResponseStatus());
 
   addNewCard = (data) =>
     fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
-      method: "POST",
+      credentials: 'include',
+      method: 'POST',
       body: JSON.stringify({
         name: data.name,
         link: data.link,
@@ -40,19 +59,22 @@ class Api {
   deleteCard = (id) =>
     fetch(`${this._baseUrl}/cards/${id}`, {
       headers: this._headers,
-      method: "DELETE",
+      credentials: 'include',
+      method: 'DELETE',
     }).then(this._checkResponseStatus());
 
   _likeSetting = (id) =>
     fetch(`${this._baseUrl}/cards/${id}/likes`, {
       headers: this._headers,
-      method: "PUT",
+      credentials: 'include',
+      method: 'PUT',
     }).then(this._checkResponseStatus());
 
   _likeRemoving = (id) =>
     fetch(`${this._baseUrl}/cards/${id}/likes`, {
       headers: this._headers,
-      method: "DELETE",
+      credentials: 'include',
+      method: 'DELETE',
     }).then(this._checkResponseStatus());
 
   changeLikeCardStatus = (id, isLiked) => {
@@ -62,7 +84,8 @@ class Api {
   changeUserAvatar = (data) =>
     fetch(`${this._baseUrl}/users/me/avatar`, {
       headers: this._headers,
-      method: "PATCH",
+      credentials: 'include',
+      method: 'PATCH',
       body: JSON.stringify({
         avatar: data.avatar,
       }),
@@ -70,11 +93,9 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-59",
-  headers: {
-    authorization: "d322a368-4724-446c-8427-74524503d98e",
-    "Content-Type": "application/json",
-  },
+  baseUrl: 'https://samoshin-project.nomoredomains.monster',
+  headers: {'Content-Type': 'application/json'},
+  credentials: 'include',
 });
 
 export default api;
