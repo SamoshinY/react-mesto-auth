@@ -13,12 +13,8 @@ export const useAuthorize = (handleInfoTooltip) => {
 
   const checkToken = useCallback(async () => {
     try {
-      // const token = localStorage.getItem('token');
-      // if (!token) {
-      //   throw new Error('Нет токена');
-      // }
-      const user = await Auth.getContent(/*token*/);
-      // console.log(user);
+      const user = await Auth.getContent();
+
       if (!user._id) {
         throw new Error('Нет данных');
       }
@@ -36,17 +32,13 @@ export const useAuthorize = (handleInfoTooltip) => {
     try {
       setErrorText('');
       const data = await Auth.authorize(values);
-      console.log(data)
-      
-      if (data.error  || data.message !== "Вы успешно прошли авторизацию!") {
+
+      if (data.error || data.message !== 'Вы успешно прошли авторизацию!') {
         setErrorText(data.error || data.message);
         setAuthResult(false);
         throw new Error('Ошибка аутентификации');
       }
-      // if (data.token) {
-      // localStorage.setItem('token', data.token);
       setLoggedIn(true);
-      // }
       navigate('/', { replace: true });
       setUserData(values);
     } catch (err) {
@@ -62,7 +54,7 @@ export const useAuthorize = (handleInfoTooltip) => {
     try {
       setErrorText('');
       const user = await Auth.register({ password, email });
-      console.log(user)
+
       if (user.error || user.message) {
         setErrorText(user.error || user.message);
         setAuthResult(false);
@@ -82,12 +74,16 @@ export const useAuthorize = (handleInfoTooltip) => {
     }
   };
 
-  const handleLogOut = useCallback(() => {
-    setLoggedIn(false);
-    setUserData({});    
-    // localStorage.removeItem('token');
-    navigate('/sign-in', { replace: true });
-  }, [navigate]);
+  const handleLogOut = async () => {
+    try {
+      setLoggedIn(false);
+      setUserData({});
+      await Auth.logout();
+      navigate('/sign-in', { replace: true });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return {
     checkToken,

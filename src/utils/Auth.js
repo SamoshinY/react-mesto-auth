@@ -1,7 +1,7 @@
 export const BASE_URL = 'https://samoshin-project.nomoredomains.monster';
 
 const makeRequest = (url, method, body) => {
-  const headers = { 'Content-Type': 'application/json' };  
+  const headers = { 'Content-Type': 'application/json' };
   const config = {
     method,
     headers,
@@ -23,4 +23,8 @@ export const authorize = ({ password, email }) => {
 
 export const getContent = () => {
   return makeRequest('/users/me', 'GET');
+};
+
+export const logout = () => {
+  return makeRequest('/users/me', 'DELETE');
 };
