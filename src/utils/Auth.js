@@ -1,10 +1,7 @@
 export const BASE_URL = 'https://samoshin-project.nomoredomains.monster';
 
-const makeRequest = (url, method, body, token) => {
-  const headers = { 'Content-Type': 'application/json' };
-  // if (token) {
-  //   headers['Authorization'] = `Bearer ${token}`;
-  // }
+const makeRequest = (url, method, body) => {
+  const headers = { 'Content-Type': 'application/json' };  
   const config = {
     method,
     headers,
@@ -24,6 +21,6 @@ export const authorize = ({ password, email }) => {
   return makeRequest('/signin', 'POST', { password, email });
 };
 
-export const getContent = (/*token*/) => {
-  return makeRequest('/users/me', 'GET', undefined /*, token*/);
+export const getContent = () => {
+  return makeRequest('/users/me', 'GET');
 };

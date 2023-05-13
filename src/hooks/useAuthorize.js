@@ -18,13 +18,13 @@ export const useAuthorize = (handleInfoTooltip) => {
       //   throw new Error('Нет токена');
       // }
       const user = await Auth.getContent(/*token*/);
-      console.log(user);
-      if (!user.email) {
+      // console.log(user);
+      if (!user._id) {
         throw new Error('Нет данных');
       }
       setLoggedIn(true);
       navigate('/', { replace: true });
-      setUserData(user.data);
+      setUserData(user);
     } catch (err) {
       console.error(err);
     } finally {
@@ -62,12 +62,13 @@ export const useAuthorize = (handleInfoTooltip) => {
     try {
       setErrorText('');
       const user = await Auth.register({ password, email });
+      console.log(user)
       if (user.error || user.message) {
         setErrorText(user.error || user.message);
         setAuthResult(false);
         throw new Error('Ошибка регистрации');
       }
-      if (user.data._id) {
+      if (user._id) {
         setAuthResult(true);
         handleInfoTooltip();
         navigate('/sign-in', { replace: true });

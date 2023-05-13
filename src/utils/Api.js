@@ -7,25 +7,25 @@ class Api {
   _checkResponseStatus = () => (res) =>
     res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 
-  _makeRequest = (url, method, body, token) => {
+  // _makeRequest = (url, method, body, token) => {
     
-    const config = {
-      method,
-      credentials: 'include',
-      headers: this._headers,
-    };
-    if (body) {
-      config.body = JSON.stringify(body);
-    }
-    return fetch(`${this._baseUrl}${url}`, config).then(
-      this._checkResponseStatus()
-    );
-  };
+  //   const config = {
+  //     method,
+  //     credentials: 'include',
+  //     headers: this._headers,
+  //   };
+  //   if (body) {
+  //     config.body = JSON.stringify(body);
+  //   }
+  //   return fetch(`${this._baseUrl}${url}`, config).then(
+  //     this._checkResponseStatus()
+  //   );
+  // };
 
   getInfoMe = () =>
     fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
-      credentials: 'include',
+      credentials: 'include',      
     }).then(this._checkResponseStatus());
 
   editUserProfile = (info) =>
@@ -95,7 +95,7 @@ class Api {
 const api = new Api({
   baseUrl: 'https://samoshin-project.nomoredomains.monster',
   headers: {'Content-Type': 'application/json'},
-  credentials: 'include',
+  // credentials: 'include',
 });
 
 export default api;
