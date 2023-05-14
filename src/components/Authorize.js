@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import "../pages/index.css";
+import { useEffect } from "react";
 import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 const Authorize = ({ onAuthorize, heading, textButton }) => {

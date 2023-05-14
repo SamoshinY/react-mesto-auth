@@ -26,5 +26,5 @@ export const getContent = () => {
 };
 
 export const logout = () => {
-  return makeRequest('/users/me', 'DELETE');
+  return makeRequest('/signin', 'DELETE');
 };

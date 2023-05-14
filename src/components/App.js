@@ -78,7 +78,7 @@ const App = () => {
 
   useEffect(() => {
     checkToken();
-  }, [checkToken]);
+  }, []);
 
   useEffect(() => {
     if (loggedIn) {

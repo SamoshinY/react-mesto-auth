@@ -76,10 +76,10 @@ export const useAuthorize = (handleInfoTooltip) => {
 
   const handleLogOut = async () => {
     try {
-      setLoggedIn(false);
-      setUserData({});
       await Auth.logout();
-      navigate('/sign-in', { replace: true });
+      setLoggedIn(false);
+      setUserData({});      
+      navigate('/sign-in', { replace: true });      
     } catch (err) {
       console.error(err);
     }
