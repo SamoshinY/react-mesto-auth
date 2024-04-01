@@ -1,3 +1,5 @@
+import { BASE_URL, headers } from './Auth';
+
 class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
@@ -66,9 +68,9 @@ class Api {
   };
 }
 
-const api = new Api({
-  baseUrl: 'https://samoshin-project.nomoredomains.monster',
-  headers: { 'Content-Type': 'application/json' },
+const api = new Api({  
+  baseUrl: BASE_URL,
+  headers
 });
 
 export default api;

@@ -1,7 +1,9 @@
-export const BASE_URL = 'https://samoshin-project.nomoredomains.monster';
+const BASE_URL = 'https://samoshin.pro';
+const headers = { 'Content-Type': 'application/json' };
+
+export { BASE_URL, headers };
 
 const makeRequest = (url, method, body) => {
-  const headers = { 'Content-Type': 'application/json' };
   const config = {
     method,
     headers,
